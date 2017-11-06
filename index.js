@@ -3,12 +3,39 @@ const dateformat = require('dateformat');
 const util = require('util');
 const colors = require('cli-color');
 const stacky = require('stacky');
+const extend = require('deep-extend');
+
+const defaults = {
+  level:4,
+  colors: {
+    trace:13,
+    error:9,
+    warn:11,
+    info:27,
+    log:40,
+    timestamp: 109,
+    lineno: 108,
+    funcname:7
+   },
+   prefix: {
+    timestamp: {
+      visible: true,
+      /**
+       * more about format strings here
+       * https://www.npmjs.com/package/dateformat#mask-options
+       */
+      format: "isoUtcDateTime"
+    },
+    lineno: true,
+    funcname: true
+   }
+}
 
 var SpiffyConsole = function(options) {
     var self = this;
-      this.limit = options && options.level || 4;
-      var customcolors = options && options.colors;
-      this.colors = util._extend({trace:13, error:9, warn:11, info:27, log:40}, customcolors);
+    this.options = extend(defaults, options);
+    this.limit = this.options.level;
+    this.colors = this.options.colors;
 
     var strd = function() {
         return this.defaultf.apply(this, arguments);
@@ -102,8 +129,32 @@ SpiffyConsole.prototype.defaultf = function() {
     var f = args.shift();
     var now = new Date();
 
-    var ts = dateformat(now, "UTC:dd.mm.yyyy HH:MM:ss Z");
-    var prefix = util.format("%s %s %s", colors.xterm(250)(ts), colors.xterm(254)(fname), colors.xterm(240)(fileinfo));
+    var ts = dateformat(now, this.options.prefix.timestamp.format);
+
+    var template = [], p_args=[];
+
+    if(this.options.prefix.timestamp) {
+      template.push("%s");
+      p_args.push(colors.xterm(this.colors.timestamp)(ts));
+    }
+
+    if(this.options.prefix.funcname) {
+      template.push("%s");
+      p_args.push(colors.xterm(this.colors.funcname)(fname));
+    }
+
+    if(this.options.prefix.lineno) {
+      template.push("%s");
+      p_args.push(colors.xterm(this.colors.lineno)(fileinfo));
+    }
+
+
+
+    var argarr = [];
+    argarr.push(template.join(" "));
+    Array.prototype.push.apply(argarr, p_args);
+    var prefix = util.format.apply(util, argarr);
+    //("%s %s %s", colors.xterm(250)(ts), colors.xterm(254)(fname), colors.xterm(240)(fileinfo));
 
     var res =  util.format("[%s] %s", f.toUpperCase(), util.format.apply(util, args));
 

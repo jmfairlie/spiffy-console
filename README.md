@@ -37,6 +37,38 @@ spiffy.trace(new Error('some error'));
 ```
 
 ## Options
+
+### Defaults
+```
+const defaults = {
+  level:4,
+  colors: {
+    trace:13,
+    error:9,
+    warn:11,
+    info:27,
+    log:40,
+    timestamp: 109,
+    lineno: 108,
+    funcname:7
+   },
+   prefix: {
+    timestamp: {
+      visible: true,
+      /**
+       * more about format strings here
+       * https://www.npmjs.com/package/dateformat#mask-options
+       */
+      format: "isoUtcDateTime"
+    },
+    lineno: true,
+    funcname: true
+   }
+}
+
+```
+
+### Example
 ```js
 /**
  * example
