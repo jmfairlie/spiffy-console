@@ -1,0 +1,21 @@
+{
+  "name": "spiffy-console",
+  "version": "0.1.0",
+  "description": "color coded console output and stack traces",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "Jean M. Fairlie <jmfairlie@gmail.com>",
+  "license": "SEE LICENSE IN license",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jmfairlie/spiffy-console.git"
+  },
+  "dependencies": {
+    "caller-id": "^0.1.0",
+    "cli-color": "^1.2.0",
+    "dateformat": "^3.0.2",
+    "stacky": "^1.3.1"
+  }
+}
