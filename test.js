@@ -17,9 +17,4 @@ spiffy.log("hello", "log");
 spiffy.info("hello", "info");
 spiffy.warn("hello", "warn");
 spiffy.error("hello", "error");
-
-try {
-  a[0] = 0;
-} catch(e) {
-  spiffy.trace(e);
-}
+spiffy.trace(new Error('some error'));
