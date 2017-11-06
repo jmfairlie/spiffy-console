@@ -21,7 +21,9 @@ var options = {
 }
 
 /*
- * if set to true it will replace the global console functions for spiffy functions
+ * if set to true it will replace the global console functions with
+ * spiffy functions so that any call to console.* will call the
+ * spiffy equivalent
  */
 var replaceConsole = false;
 
