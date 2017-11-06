@@ -36,12 +36,24 @@ spiffy.error("hello", "error");
 spiffy.trace(new Error('some error'));
 ```
 
-## Options
-
-### Defaults
-```
+## Option Defaults
+```js
 const defaults = {
+  /*
+   * print up to level 4
+   *
+   * levels:
+   * - trace: 0
+   * - error: 1
+   * - warn: 2
+   * - info: 3
+   * - log: 4
+   */
   level:4,
+  /*
+   * Xterm color indices
+   * https://jonasjacek.github.io/colors/
+   */
   colors: {
     trace:13,
     error:9,
@@ -66,37 +78,6 @@ const defaults = {
    }
 }
 
-```
-
-### Example
-```js
-/**
- * example
- */
-var options = {
-  /*
-   * print up to level 4
-   *
-   * levels:
-   * - trace: 0
-   * - error: 1
-   * - warn: 2
-   * - info: 3
-   * - log: 4
-   */
-  level: 4,
-  /*
-   * Xterm color indices
-   * https://jonasjacek.github.io/colors/
-   */
-  colors: {
-    trace:208, //default 13
-    error: 196, //default 9
-    warn: 193, //default 11
-    info: 177, //default 27
-    log: 118 //default 40
-  }
-}
 ```
 ## Xterm Color indices
 https://jonasjacek.github.io/colors/
