@@ -1,7 +1,8 @@
 {
   "name": "spiffy-console",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "color coded console output and stack traces",
+  "keywords": ["console", "color", "logger", "log", "trace", "stacktrace"],
   "main": "index.js",
   "scripts": {
     "test": "node test.js"
