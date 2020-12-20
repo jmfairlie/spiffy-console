@@ -31,17 +31,17 @@ const defaults = {
    }
 }
 
-var SpiffyConsole = function(options) {
-    var self = this;
+const SpiffyConsole = function(options) {
+    const self = this;
     this.options = extend(defaults, options);
     this.limit = this.options.level;
     this.colors = this.options.colors;
 
-    var strd = function() {
+    const strd = function() {
         return this.defaultf.apply(this, arguments);
     }
 
-    var stky = function() {
+    const stky = function() {
         return this.stackf.apply(this, arguments);
     }
 
@@ -84,12 +84,12 @@ var SpiffyConsole = function(options) {
     }
 
     Object.keys(this.config).forEach(function(f) {
-        var level = self.config[f].level;
+        const level = self.config[f].level;
         //assign a noop func if the debug level is above the limit
         SpiffyConsole.prototype[f] = (level<=self.limit)?function() {
-            var caller = callerid.getData();
-            var fname = caller.functionName || "global";
-            var fileinfo = util.format("(%s:%d)", caller.filePath.split("/").pop(),caller.lineNumber);
+            const caller = callerid.getData();
+            const fname = caller.functionName || "global";
+            const fileinfo = util.format("(%s:%d)", caller.filePath.split("/").pop(),caller.lineNumber);
             args = Array.prototype.slice.call(arguments);
             args.unshift(fname, fileinfo, f);
             this.config[f].formatfunc.apply(this, args);
@@ -99,14 +99,14 @@ var SpiffyConsole = function(options) {
 
 /*print pretty stack traces for stack level*/
 SpiffyConsole.prototype.stackf = function() {
-    var args = Array.prototype.slice.call(arguments);
+    const args = Array.prototype.slice.call(arguments);
 
-    var fname = args.shift();
-    var fileinfo = args.shift();
-    var f = args.shift();
-    var err = args.shift();
+    const fname = args.shift();
+    const fileinfo = args.shift();
+    const f = args.shift();
+    const err = args.shift();
 
-    var newargs = [err.message];
+    const newargs = [err.message];
     newargs.unshift(fname, fileinfo, 'trace');
     this.defaultf.apply(this, newargs);
     process.stdout.write(stacky.pretty(err.stack, {
@@ -123,15 +123,15 @@ SpiffyConsole.prototype.stackf = function() {
 
 /*print all other levels with timestamp and color*/
 SpiffyConsole.prototype.defaultf = function() {
-    var args = Array.prototype.slice.call(arguments);
-    var fname = args.shift();
-    var fileinfo = args.shift();
-    var f = args.shift();
-    var now = new Date();
+    const args = Array.prototype.slice.call(arguments);
+    const fname = args.shift();
+    const fileinfo = args.shift();
+    const f = args.shift();
+    const now = new Date();
 
-    var ts = dateformat(now, this.options.prefix.timestamp.format);
+    const ts = dateformat(now, this.options.prefix.timestamp.format);
 
-    var template = [], p_args=[];
+    const template = [], p_args=[];
 
     if(this.options.prefix.timestamp) {
       template.push("%s");
@@ -150,15 +150,15 @@ SpiffyConsole.prototype.defaultf = function() {
 
 
 
-    var argarr = [];
+    const argarr = [];
     argarr.push(template.join(" "));
     Array.prototype.push.apply(argarr, p_args);
-    var prefix = util.format.apply(util, argarr);
+    const prefix = util.format.apply(util, argarr);
     //("%s %s %s", colors.xterm(250)(ts), colors.xterm(254)(fname), colors.xterm(240)(fileinfo));
 
-    var res =  util.format("[%s] %s", f.toUpperCase(), util.format.apply(util, args));
+    const res =  util.format("[%s] %s", f.toUpperCase(), util.format.apply(util, args));
 
-    var msg = this.config[f].colorfunc(res);
+    const msg = this.config[f].colorfunc(res);
     process.stdout.write(prefix + msg);
     process.stdout.write('\n');
 }
@@ -176,10 +176,10 @@ SpiffyConsole.prototype.clear = function() {
  *
  * xterm color indices can be found here https://jonasjacek.github.io/colors/ 
  */
-module.exports =  function(options, replaceConsole) {
+const wrapper =  function(options={replaceConsole:false}, replaceConsole/*this argument is deprecated*/) {
   const __logger = new SpiffyConsole(options);
-  
-  if(replaceConsole) {
+  const replace = replaceConsole !== undefined ? replaceConsole : options.replaceConsole;
+  if(replace) {
     console.log = __logger.log.bind(__logger);
     console.warn = __logger.warn.bind(__logger);
     console.error = __logger.error.bind(__logger);
@@ -188,3 +188,5 @@ module.exports =  function(options, replaceConsole) {
   }
   return __logger;
 }
+
+module.exports = wrapper;

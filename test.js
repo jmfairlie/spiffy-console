@@ -2,14 +2,14 @@ var options = {
   level: 4,
   prefix: {
     funcname: false,
-  }
+  },
+  replaceConsole: true
 }
 
-var spiffy = require('./index.js')(options, false);
+require('./index.js')(options);
 
-
-spiffy.log("%d hello %s", 1, "log");
-spiffy.info("hello", "info");
-spiffy.warn("hello", "warn");
-spiffy.error("hello", "error");
-spiffy.trace(new Error('some error'));
+console.log("%d hello %s", 1, "log");
+console.info("hello", "info");
+console.warn("hello", "warn");
+console.error("hello", "error");
+console.trace(new Error('some error'));
